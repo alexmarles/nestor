@@ -1,7 +1,7 @@
 const { Telegraf } = require('telegraf');
 const dotenv = require('dotenv');
 
-const { Collection, Album } = require('./tradingCards');
+const { Collection, Album } = require('../src/TradingCards');
 
 dotenv.config();
 
@@ -30,7 +30,8 @@ _/repes [collection]_ – get repeated cards
 _/count [collection]_ – get stats for your album
 (Example: \`/count Animales\`)
 `;
-const CHECK_HELP_COPY = 'Are you sure you are adding all the information? Check /help for examples.';
+const CHECK_HELP_COPY =
+    'Are you sure you are adding all the information? Check /help for examples.';
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -108,12 +109,14 @@ bot.command('/addCards', ctx => {
                 console.log('[ALBUM/ADD CARDS] – Album retrieved');
                 album
                     .addCards(cards)
-                    .then((newCards) => {
+                    .then(newCards => {
                         console.log('[ALBUM/ADD CARDS] – Cards added');
                         ctx.replyWithMarkdown(
                             `${senderFirstName}, I added this new cards into your *${collectionName}* album:\n- ${newCards.join(
                                 '\n- '
-                            )}\nAlso, ${cards.length - newCards.length} cards are repeated and were already in your album.`
+                            )}\nAlso, ${
+                                cards.length - newCards.length
+                            } cards are repeated and were already in your album.`
                         );
                     })
                     .catch(() => {
