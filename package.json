@@ -5,17 +5,15 @@
     "author": "Alex Marles Alcaraz <alex.marles@king.com>",
     "license": "MIT",
     "scripts": {
-        "start": "nodemon functions/nestor.js",
-        "postinstall": "netlify-lambda install",
-        "buildNetlify": "netlify-lambda build functions",
-        "devNetlify": "netlify-lambda serve functions"
+        "start": "nodemon functions/nestor.js"
     },
     "dependencies": {
         "dotenv": "^8.2.0",
         "firebase": "^8.1.1",
-        "netlify-lambda": "^2.0.1",
-        "nodemon": "^2.0.6",
         "telegraf": "^3.38.0",
         "uuid": "^8.3.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.6"
     }
 }
