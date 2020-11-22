@@ -110,12 +110,15 @@ class Album {
     }
 
     async addCards(cards) {
+        const newCards = [];
         cards.forEach(card => {
             const count = !!this._cards[card] ? this._cards[card] + 1 : 1;
+            if (count === 1) newCards.push(card);
             database
                 .ref(`albums/${this._collection}/${this._username}/${card}`)
                 .set(count);
         });
+        return newCards;
     }
 
     async tengui() {
