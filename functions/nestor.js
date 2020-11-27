@@ -9,7 +9,7 @@ const {
     falti,
     repes,
     count,
-} = require('./TradingCards');
+} = require('../src/TradingCards');
 
 const HELP_COPY = `
 I can help you manage your Trading Cards Collections.
