@@ -5,6 +5,7 @@ const { Collection } = require('./Collection');
 
 class Album {
     constructor(collectionName, username, cards) {
+        this._path = `albums/${collectionName}/${username}`
         this._collection = collectionName;
         this._username = username;
         this._cards = cards;
@@ -17,38 +18,81 @@ class Album {
         });
     }
 
+    static createCollaborative(collectionName, username, collabs) {
+        console.log('[ALBUM/CREATE – Creating Collaborative Album');
+        const ref = database.ref(`albums/${collectionName}/${username}`).set({
+            uuid: uuidv4(),
+            collabs,
+        });
+        if (ref) {
+            collabs.forEach(collab => {
+                database.ref(`albums/${collectionName}/${collab}`).set({
+                    uuid: uuidv4(),
+                    owner: username,
+                });
+            });
+        }
+        return ref;
+    }
+
     static get(collectionName, username) {
         console.log('[ALBUM/GET] – Retrieving Album');
         const result = new Promise((resolve, reject) => {
             database
-                .ref(`albums/${collectionName}`)
+                .ref(`albums/${collectionName}/${username}`)
                 .once('value', snap => {
-                    let found = false;
-                    snap.forEach(collector => {
-                        if (collector.key === username) {
-                            console.log('[ALBUM/GET] – Album Retrieved');
-                            found = true;
-                            const cards = {};
-                            collector.forEach(card => {
-                                if (card.key !== 'uid')
-                                    cards[parseInt(card.key)] = card.val();
+                    console.log('[ALBUM/GET] – Album Retrieved');
+                    if (snap.hasChild('owner')) {
+                        console.log('[ALBUM/GET] – Album is Collaborative');
+                        const owner = snap.child('owner').val();
+                        database
+                            .ref(`albums/${collectionName}/${owner}`)
+                            .once('value', originalSnap => {
+                                const cards = originalSnap.hasChild('cards') && originalSnap.child('cards').toJSON();
+
+                                if (cards) {
+                                    console.log('[ALBUM/GET] – Cards Found');
+                                    resolve({
+                                        found: true,
+                                        album: new this(
+                                            collectionName,
+                                            owner,
+                                            cards,
+                                        ),
+                                    });
+                                } else {
+                                    console.log('[ALBUM/GET] – Cards Not Found');
+                                    resolve({ found: false, album: undefined });
+                                }
                             });
+                    } else {
+                        const cards = snap.hasChild('cards') && snap.child('cards').toJSON();
+
+                        if (cards) {
+                            console.log('[ALBUM/GET] – Cards Found');
                             resolve({
                                 found: true,
                                 album: new this(
                                     collectionName,
                                     username,
-                                    cards
+                                    cards,
+                                ),
+                            });
+                        } else {
+                            console.log('[ALBUM/GET] – Cards Not Found');
+                            resolve({
+                                found: true,
+                                album: new this(
+                                    collectionName,
+                                    username,
+                                    [],
                                 ),
                             });
                         }
-                    });
-                    if (!found) {
-                        console.log('[ALBUM/GET] – Album Not Found');
-                        resolve({ found: false, album: undefined });
                     }
                 })
                 .catch(err => {
+                    console.log('[ALBUM/GET] – Album Not Found');
                     reject(err);
                 });
         });
@@ -61,7 +105,7 @@ class Album {
             const count = !!this._cards[card] ? this._cards[card] + 1 : 1;
             if (count === 1) newCards.push(card);
             database
-                .ref(`albums/${this._collection}/${this._username}/${card}`)
+                .ref(`${this._path}/cards/${card}`)
                 .set(count);
         });
         return newCards;
