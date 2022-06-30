@@ -9,6 +9,7 @@ const {
     falti,
     repes,
     count,
+    update,
 } = require('./TradingCards');
 
 const HELP_COPY = `
@@ -63,6 +64,8 @@ bot.command('/falti', falti);
 bot.command('/repes', repes);
 
 bot.command('/count', count);
+
+bot.command('/update', update);
 
 bot.launch();
 
