@@ -5,21 +5,21 @@ const { Collection } = require('./Collection');
 
 class Album {
     constructor(collectionName, username, cards) {
-        this._path = `albums/${collectionName}/${username}`
+        this._path = `albums/${collectionName}/${username}`;
         this._collection = collectionName;
         this._username = username;
         this._cards = cards;
     }
 
     static create(collectionName, username) {
-        console.log('[ALBUM/CREATE – Creating Album');
+        console.log('[ALBUM/CREATE] – Creating Album');
         return database.ref(`albums/${collectionName}/${username}`).set({
             uid: uuidv4(),
         });
     }
 
     static createCollaborative(collectionName, username, collabs) {
-        console.log('[ALBUM/CREATE – Creating Collaborative Album');
+        console.log('[ALBUM/CREATE] – Creating Collaborative Album');
         const ref = database.ref(`albums/${collectionName}/${username}`).set({
             uuid: uuidv4(),
             collabs,
@@ -48,7 +48,9 @@ class Album {
                         database
                             .ref(`albums/${collectionName}/${owner}`)
                             .once('value', originalSnap => {
-                                const cards = originalSnap.hasChild('cards') && originalSnap.child('cards').toJSON();
+                                const cards =
+                                    originalSnap.hasChild('cards') &&
+                                    originalSnap.child('cards').toJSON();
 
                                 if (cards) {
                                     console.log('[ALBUM/GET] – Cards Found');
@@ -57,16 +59,20 @@ class Album {
                                         album: new this(
                                             collectionName,
                                             owner,
-                                            cards,
+                                            cards
                                         ),
                                     });
                                 } else {
-                                    console.log('[ALBUM/GET] – Cards Not Found');
+                                    console.log(
+                                        '[ALBUM/GET] – Cards Not Found'
+                                    );
                                     resolve({ found: false, album: undefined });
                                 }
                             });
                     } else {
-                        const cards = snap.hasChild('cards') && snap.child('cards').toJSON();
+                        const cards =
+                            snap.hasChild('cards') &&
+                            snap.child('cards').toJSON();
 
                         if (cards) {
                             console.log('[ALBUM/GET] – Cards Found');
@@ -75,18 +81,14 @@ class Album {
                                 album: new this(
                                     collectionName,
                                     username,
-                                    cards,
+                                    cards
                                 ),
                             });
                         } else {
                             console.log('[ALBUM/GET] – Cards Not Found');
                             resolve({
                                 found: true,
-                                album: new this(
-                                    collectionName,
-                                    username,
-                                    [],
-                                ),
+                                album: new this(collectionName, username, []),
                             });
                         }
                     }
@@ -104,9 +106,7 @@ class Album {
         cards.forEach(card => {
             const count = !!this._cards[card] ? this._cards[card] + 1 : 1;
             if (count === 1) newCards.push(card);
-            database
-                .ref(`${this._path}/cards/${card}`)
-                .set(count);
+            database.ref(`${this._path}/cards/${card}`).set(count);
         });
         return newCards;
     }

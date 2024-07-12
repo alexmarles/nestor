@@ -40,6 +40,29 @@ class Collection {
         return result;
     }
 
+    static getAll() {
+        const result = new Promise((resolve, reject) => {
+            database
+                .ref(`collections`)
+                .once('value', snap => {
+                    const data = snap.val();
+                    const result = Object.values(data).map(collection => {
+                        return new this(
+                            collection.uid,
+                            collection.name,
+                            collection.numCards,
+                            collection.author
+                        );
+                    });
+                    resolve(result);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+        return result;
+    }
+
     getUid() {
         return this._uid;
     }

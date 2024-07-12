@@ -2,9 +2,10 @@ const { Collection } = require('./Collection');
 const { Album } = require('./Album');
 
 const CHECK_HELP_COPY =
-'Are you sure you are adding all the information? Check /help for examples.';
+    'Are you sure you are adding all the information? Check /help for examples.';
 
 const newCollection = ctx => {
+    console.log('[COMMANDS] – newCollection');
     const [, name, numCards] = ctx.message.text.split(' ');
     const sender = ctx.from.username;
     const senderFirstName = ctx.from.first_name;
@@ -25,7 +26,34 @@ const newCollection = ctx => {
         });
 };
 
+const getCollections = ctx => {
+    console.log('[COMMANDS] – getCollections');
+
+    const sender = ctx.from.username;
+    const senderFirstName = ctx.from.first_name;
+
+    if (!sender) {
+        ctx.reply(CHECK_HELP_COPY);
+        return;
+    }
+
+    Collection.getAll()
+        .then(result => {
+            console.log(result);
+            ctx.replyWithMarkdown(
+                `${senderFirstName}, these are all the available Collections:\n\n- ${result
+                    .map(c => c._name)
+                    .join('\n- ')}`
+            );
+        })
+        .catch(error => {
+            console.error(error);
+            ctx.reply('There was an error, try again later.');
+        });
+};
+
 const newAlbum = ctx => {
+    console.log('[COMMANDS] – newAlbum');
     const [, collectionName, after, ...collabs] = ctx.message.text.split(' ');
     const sender = ctx.from.username;
     const senderFirstName = ctx.from.first_name;
@@ -39,7 +67,9 @@ const newAlbum = ctx => {
         Album.createCollaborative(collectionName, sender, collabs)
             .then(() => {
                 ctx.replyWithMarkdown(
-                    `${senderFirstName}, I created the new *${collectionName}* collaborative Album for ${collabs.join(', ')} and you.\nNow you can ask me to add your cards using _/addCards ${collectionName} [list of cards]_`
+                    `${senderFirstName}, I created the new *${collectionName}* collaborative Album for ${collabs.join(
+                        ', '
+                    )} and you.\nNow you can ask me to add your cards using _/addCards ${collectionName} [list of cards]_`
                 );
             })
             .catch(err => {
@@ -59,6 +89,7 @@ const newAlbum = ctx => {
 };
 
 const addCards = ctx => {
+    console.log('[COMMANDS] – addCards');
     const [, collectionName] = ctx.message.text.split(' ');
     const cards = ctx.message.text.split(' ').slice(2);
     const sender = ctx.from.username;
@@ -102,6 +133,7 @@ const addCards = ctx => {
 };
 
 const tengui = ctx => {
+    console.log('[COMMANDS] – tengui');
     const [, collectionName] = ctx.message.text.split(' ');
     const sender = ctx.from.username;
     const senderFirstName = ctx.from.first_name;
@@ -153,6 +185,7 @@ const tengui = ctx => {
 };
 
 const falti = ctx => {
+    console.log('[COMMANDS] – falti');
     const [, collectionName] = ctx.message.text.split(' ');
     const sender = ctx.from.username;
     const senderFirstName = ctx.from.first_name;
@@ -200,6 +233,7 @@ const falti = ctx => {
 };
 
 const repes = ctx => {
+    console.log('[COMMANDS] – repes');
     const [, collectionName] = ctx.message.text.split(' ');
     const sender = ctx.from.username;
     const senderFirstName = ctx.from.first_name;
@@ -236,6 +270,7 @@ const repes = ctx => {
 };
 
 const count = ctx => {
+    console.log('[COMMANDS] – count');
     const [, collectionName] = ctx.message.text.split(' ');
     const sender = ctx.from.username;
     const senderFirstName = ctx.from.first_name;
@@ -273,6 +308,7 @@ const count = ctx => {
 };
 
 const update = ctx => {
+    console.log('[COMMANDS] – update');
     const [, collectionName] = ctx.message.text.split(' ');
     const sender = ctx.from.username;
     const senderFirstName = ctx.from.first_name;
@@ -314,6 +350,7 @@ const update = ctx => {
 
 module.exports = {
     newCollection,
+    getCollections,
     newAlbum,
     addCards,
     tengui,
