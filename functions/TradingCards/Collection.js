@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
-const { database } = require('../../config/database');
+const { database } = require('../config/database');
 
 class Collection {
     constructor(uid, name, numCards, author) {

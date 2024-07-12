@@ -1,6 +1,3 @@
-require('dotenv').config();
-const { Telegraf } = require('telegraf');
-
 const {
     newCollection,
     getCollections,
@@ -41,48 +38,39 @@ _/count [collection]_ – get stats for your album
 (Example: \`/count Animales\`)
 `;
 
-const bot = new Telegraf(process.env.BOT_TOKEN);
+const initNestor = bot => {
+    bot.start(ctx => {
+        if (!ctx.message.from.username) return;
+        if (!ctx.message.from.first_name) return;
 
-bot.start(ctx => {
-    if (!ctx.message.from.username) return;
-    if (!ctx.message.from.first_name) return;
+        ctx.reply(`Welcome ${ctx.message.from.username}`);
+    });
 
-    ctx.reply(`Welcome ${ctx.message.from.username}`);
-});
+    bot.help(ctx => {
+        ctx.reply(HELP_COPY);
+    });
 
-bot.help(ctx => {
-    ctx.reply(HELP_COPY);
-});
+    bot.command('newCollection', newCollection);
 
-bot.command('newCollection', newCollection);
+    bot.command('getCollections', getCollections);
 
-bot.command('getCollections', getCollections);
+    bot.command('newAlbum', newAlbum);
 
-bot.command('newAlbum', newAlbum);
+    bot.command('addCards', addCards);
 
-bot.command('addCards', addCards);
+    bot.command('tengui', tengui);
 
-bot.command('tengui', tengui);
+    bot.command('falti', falti);
 
-bot.command('falti', falti);
+    bot.command('repes', repes);
 
-bot.command('repes', repes);
+    bot.command('count', count);
 
-bot.command('count', count);
+    bot.command('update', update);
 
-bot.command('update', update);
+    bot.launch();
+};
 
-bot.launch();
-
-exports.handler = async event => {
-    try {
-        await bot.handleUpdate(JSON.parse(event.body));
-        return { statusCode: 200, body: '' };
-    } catch (e) {
-        console.log(e);
-        return {
-            statusCode: 400,
-            body: 'This endpoint is meant for bot and telegram communication',
-        };
-    }
+module.exports = {
+    initNestor,
 };
