@@ -1,8 +1,9 @@
-require('dotenv/config');
+require('dotenv').config();
 const { Telegraf } = require('telegraf');
 
 const {
     newCollection,
+    getCollections,
     newAlbum,
     addCards,
     tengui,
@@ -20,6 +21,8 @@ Use the following commands if you need me.
 *Collections*
 _/newCollection [name] [# of cards]_ – create a new Collection
 (Example: \`/newCollection Animales 276\`)
+_/getCollections – list all Collections
+(Example: \`/getCollections\`)
 
 *Albums*
 _/newAlbum [collection]_ – create an Album for a Collection
@@ -48,24 +51,26 @@ bot.start(ctx => {
 });
 
 bot.help(ctx => {
-    ctx.replyWithMarkdown(HELP_COPY);
+    ctx.reply(HELP_COPY);
 });
 
-bot.command('/newCollection', newCollection);
+bot.command('newCollection', newCollection);
 
-bot.command('/newAlbum', newAlbum);
+bot.command('getCollections', getCollections);
 
-bot.command('/addCards', addCards);
+bot.command('newAlbum', newAlbum);
 
-bot.command('/tengui', tengui);
+bot.command('addCards', addCards);
 
-bot.command('/falti', falti);
+bot.command('tengui', tengui);
 
-bot.command('/repes', repes);
+bot.command('falti', falti);
 
-bot.command('/count', count);
+bot.command('repes', repes);
 
-bot.command('/update', update);
+bot.command('count', count);
+
+bot.command('update', update);
 
 bot.launch();
 
