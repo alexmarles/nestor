@@ -24,6 +24,8 @@ _/getCollections – list all Collections
 *Albums*
 _/newAlbum [collection]_ – create an Album for a Collection
 (Example: \`/newAlbum Animales\`)
+_/newAlbum [collection] with [user]_ – create a collaborative Album for a Collection
+(Example: \`/newAlbum Animales with JohnSmith\`)
 
 *Cards*
 _/addCards [collection] [list of cards]_ – add cards to an Album

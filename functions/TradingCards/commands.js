@@ -120,14 +120,16 @@ const addCards = ctx => {
                             } cards are repeated and were already in your album.`
                         );
                     })
-                    .catch(() => {
+                    .catch(error => {
                         console.log('[ALBUM/ADD CARDS] – Error adding cards');
+                        console.error(error);
                         ctx.reply('There was an error, try again later.');
                     });
             }
         })
-        .catch(() => {
+        .catch(error => {
             console.log('[ALBUM/ADD CARDS] – Error retrieving album');
+            console.error(error);
             ctx.reply('There was an error, try again later.');
         });
 };
@@ -175,11 +177,15 @@ const tengui = ctx => {
                         }
                     }
                 })
-                .catch(() => {
+                .catch(error => {
+                    console.log('[ALBUM/TENGUI – Error retrieving album');
+                    console.error(error);
                     ctx.reply('There was an error, try again later.');
                 });
         })
-        .catch(() => {
+        .catch(error => {
+            console.log('[ALBUM/TENGUI – Error retrieving collection');
+            console.error(error);
             ctx.reply('There was an error, try again later.');
         });
 };
@@ -223,11 +229,15 @@ const falti = ctx => {
                         }
                     }
                 })
-                .catch(() => {
+                .catch(error => {
+                    console.log('[ALBUM/FALTI – Error retrieving album');
+                    console.error(error);
                     ctx.reply('There was an error, try again later.');
                 });
         })
-        .catch(() => {
+        .catch(error => {
+            console.log('[ALBUM/FALTI – Error retrieving collection');
+            console.error(error);
             ctx.reply('There was an error, try again later.');
         });
 };
@@ -264,7 +274,9 @@ const repes = ctx => {
                 );
             }
         })
-        .catch(() => {
+        .catch(error => {
+            console.log('[ALBUM/REPES] – Error retrieving album');
+            console.error(error);
             ctx.reply('There was an error, try again later.');
         });
 };
@@ -298,11 +310,15 @@ const count = ctx => {
                         );
                     }
                 })
-                .catch(() => {
+                .catch(error => {
+                    console.log('[ALBUM/COUNT] – Error retrieving album');
+                    console.error(error);
                     ctx.reply('There was an error, try again later.');
                 });
         })
-        .catch(() => {
+        .catch(error => {
+            console.log('[ALBUM/COUNT] – Error retrieving collection');
+            console.error(error);
             ctx.reply('There was an error, try again later.');
         });
 };
