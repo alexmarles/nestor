@@ -102,13 +102,28 @@ class Album {
     }
 
     async addCards(cards) {
-        const newCards = [];
+        const newCards = new Set();
+        const repes = new Set();
+        const newRepes = new Set();
+        const dict = {};
         cards.forEach(card => {
-            const count = !!this._cards[card] ? this._cards[card] + 1 : 1;
-            if (count === 1) newCards.push(card);
-            database.ref(`${this._path}/cards/${card}`).set(count);
+            dict[card] = !!dict[card] ? dict[card] + 1 : 1;
         });
-        return newCards;
+        for (const [card, value] of Object.entries(dict)) {
+            const count = this._cards[card] || 0;
+            if (value > 1) newRepes.add(card);
+            if (!count) {
+                newCards.add(card);
+            } else {
+                repes.add(card);
+            }
+            database.ref(`${this._path}/cards/${card}`).set(count + value);
+        }
+        return {
+            newCards,
+            repes,
+            newRepes,
+        };
     }
 
     async tengui() {
