@@ -70,6 +70,11 @@ const initNestor = bot => {
 
     bot.command('update', update);
 
+    bot.command('health', ctx => ctx.reply('I am ok!'));
+
+    // Echo
+    bot.on('message', ctx => ctx.copyMessage(ctx.chat.id, ctx.message));
+
     bot.launch();
 };
 

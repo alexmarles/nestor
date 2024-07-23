@@ -19,9 +19,6 @@ bot.catch((err, ctx) => {
 // initialize the commands
 initNestor(bot);
 
-// copy every message and send to the user
-bot.on('message', ctx => ctx.telegram.sendCopy(ctx.chat.id, ctx.message));
-
 // handle all telegram updates with HTTPs trigger
 exports.nestorBot = functions
     .region(process.env.REGION)
