@@ -6,3 +6,4 @@ build
 *-debug.log
 .runtimeconfig.json
 FirebaseService.json
+webhooks.sh
