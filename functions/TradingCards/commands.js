@@ -110,14 +110,20 @@ const addCards = ctx => {
                 console.log('[ALBUM/ADD CARDS] – Album retrieved');
                 album
                     .addCards(cards)
-                    .then(newCards => {
+                    .then(({ newCards, repes, newRepes }) => {
                         console.log('[ALBUM/ADD CARDS] – Cards added');
                         ctx.replyWithMarkdown(
-                            `${senderFirstName}, I added this new cards into your *${collectionName}* album:\n- ${newCards.join(
+                            `${senderFirstName}, I added these new cards into your *${collectionName}* album:\n- ${[
+                                ...newCards,
+                            ].join(
                                 '\n- '
-                            )}\nAlso, ${
-                                cards.length - newCards.length
-                            } cards are repeated and were already in your album.`
+                            )}\n\nYou had some repeated cards in this batch:\n- ${[
+                                ...newRepes,
+                            ].join(
+                                '\n- '
+                            )}\n\nAnd these were already in your album:\n- ${[
+                                ...repes,
+                            ].join('\n- ')}`
                         );
                     })
                     .catch(error => {
