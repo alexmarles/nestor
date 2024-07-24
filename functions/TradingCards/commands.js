@@ -112,21 +112,35 @@ const addCards = ctx => {
                     .addCards(cards)
                     .then(({ newCards, repes, newRepes }) => {
                         console.log('[ALBUM/ADD CARDS] – Cards added');
-                        ctx.replyWithMarkdown(
-                            `${senderFirstName}, I added ${
-                                newCards.size
-                            } new cards into your *${collectionName}* album:\n- ${[
-                                ...newCards,
-                            ].join('\n- ')}\n\nYou had ${
-                                newRepes.size
-                            } repeated cards in this batch:\n- ${[
-                                ...newRepes,
-                            ].join('\n- ')}\n\nAnd ${
-                                repes.size
-                            } cards were already in your album:\n- ${[
-                                ...repes,
-                            ].join('\n- ')}`
-                        );
+                        const addedText =
+                            newCards.size > 0
+                                ? `${senderFirstName}, I added *${
+                                      newCards.size
+                                  }* new cards into your *${collectionName}* album 😀:\n- ${[
+                                      ...newCards,
+                                  ].join('\n- ')}`
+                                : `${senderFirstName}, there were no new cards in this batch 😢.`;
+                        const newRepesText =
+                            newRepes.size > 0
+                                ? `There were *${
+                                      newRepes.size
+                                  }* duplicated cards in this batch: 😕\n- ${[
+                                      ...newRepes,
+                                  ].join('\n- ')}`
+                                : `There were no duplicates in this batch! 😄`;
+                        const repesText =
+                            repes.size > 0
+                                ? `And *${
+                                      repes.size
+                                  }* cards were already in your album: 😫\n- ${[
+                                      ...repes,
+                                  ].join('\n- ')}`
+                                : `None of the added cards were already in your album! 🥳`;
+                        const texts =
+                            newCards.size > 0
+                                ? [addedText, newRepesText, repesText]
+                                : [addedText, repesText];
+                        ctx.replyWithMarkdown(texts.join('\n\n'));
                     })
                     .catch(error => {
                         console.log('[ALBUM/ADD CARDS] – Error adding cards');
