@@ -120,7 +120,7 @@ export const addCards = (ctx: any) => {
                             newCards.size > 0 ?
                                 `${senderFirstName}, I added *${
                                     newCards.size
-                                }* new cards into your *${collectionName}* album 😀:\n- ${[
+                                }* new cards into your *${collectionName}* album 😀\n- ${[
                                     ...newCards,
                                 ].join('\n- ')}` :
                                 `${senderFirstName}, there were no new cards in this batch 😢.`;
@@ -128,7 +128,7 @@ export const addCards = (ctx: any) => {
                             newRepes.size > 0 ?
                                 `There were *${
                                     newRepes.size
-                                }* duplicated cards in this batch: 😕\n- ${[
+                                }* duplicated cards in this batch 😕\n- ${[
                                     ...newRepes,
                                 ].join('\n- ')}` :
                                 'There were no duplicates in this batch! 😄';
@@ -136,7 +136,7 @@ export const addCards = (ctx: any) => {
                             repes.size > 0 ?
                                 `And *${
                                     repes.size
-                                }* cards were already in your album: 😫\n- ${[
+                                }* cards were already in your album 😫\n- ${[
                                     ...repes,
                                 ].join('\n- ')}` :
                                 'None of the added cards were already in your album! 🥳';
@@ -189,15 +189,15 @@ export const dealCards = (ctx: any) => {
                             dealtCards.size > 0 ?
                                 `${senderFirstName}, I dealt *${
                                     dealtCards.size
-                                }* cards from your *${collectionName}* album 😀:\n- ${[
+                                }* cards from your *${collectionName}* album 😀\n- ${[
                                     ...dealtCards,
                                 ].join('\n- ')}` :
-                                `${senderFirstName}, I could not deal any cards 😢.`;
+                                `${senderFirstName}, I could not deal any cards 😢`;
                         const missingText =
                             missingCards.size > 0 ?
                                 `There were *${
                                     missingCards.size
-                                }* cards in this batch that you don't own or you don't have enough do deal with: 😕\n- ${[
+                                }* cards in this batch that you don't own or you don't have enough do deal with 😕\n- ${[
                                     ...missingCards,
                                 ].join('\n- ')}` :
                                 'You dealt a perfect batch! 🥳';
