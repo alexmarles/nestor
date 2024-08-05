@@ -173,7 +173,7 @@ export class Album {
         const repes: Record<string, any> = {};
         for (const card in this._cards) {
             if (this._cards[card] > 1) {
-                repes[card] = this._cards[card];
+                repes[card] = this._cards[card] - 1;
             }
         }
         return repes;
