@@ -1,10 +1,11 @@
-const { Collection } = require('./Collection');
-const { Album } = require('./Album');
+/* eslint-disable max-len */
+import { Collection } from './Collection';
+import { Album } from './Album';
 
 const CHECK_HELP_COPY =
     'Are you sure you are adding all the information? Check /help for examples.';
 
-const newCollection = ctx => {
+export const newCollection = (ctx: any) => {
     console.log('[COMMANDS] – newCollection');
     const [, name, numCards] = ctx.message.text.split(' ');
     const sender = ctx.from.username;
@@ -26,7 +27,7 @@ const newCollection = ctx => {
         });
 };
 
-const getCollections = ctx => {
+export const getCollections = (ctx: any) => {
     console.log('[COMMANDS] – getCollections');
 
     const sender = ctx.from.username;
@@ -38,21 +39,21 @@ const getCollections = ctx => {
     }
 
     Collection.getAll()
-        .then(result => {
+        .then((result: any) => {
             console.log(result);
             ctx.replyWithMarkdown(
                 `${senderFirstName}, these are all the available Collections:\n\n- ${result
-                    .map(c => c._name)
+                    .map((c: any) => c._name)
                     .join('\n- ')}`
             );
         })
-        .catch(error => {
+        .catch((error) => {
             console.error(error);
             ctx.reply('There was an error, try again later.');
         });
 };
 
-const newAlbum = ctx => {
+export const newAlbum = (ctx: any) => {
     console.log('[COMMANDS] – newAlbum');
     const [, collectionName, after, ...collabs] = ctx.message.text.split(' ');
     const sender = ctx.from.username;
@@ -72,7 +73,8 @@ const newAlbum = ctx => {
                     )} and you.\nNow you can ask me to add your cards using _/addCards ${collectionName} [list of cards]_`
                 );
             })
-            .catch(err => {
+            .catch((error) => {
+                console.error(error);
                 ctx.reply('There was an error, try again later.');
             });
     } else {
@@ -82,13 +84,14 @@ const newAlbum = ctx => {
                     `${senderFirstName}, I created the new *${collectionName}* Album for you.\nNow you can ask me to add your cards using _/addCards ${collectionName} [list of cards]_`
                 );
             })
-            .catch(err => {
+            .catch((error) => {
+                console.error(error);
                 ctx.reply('There was an error, try again later.');
             });
     }
 };
 
-const addCards = ctx => {
+export const addCards = (ctx: any) => {
     console.log('[COMMANDS] – addCards');
     const [, collectionName] = ctx.message.text.split(' ');
     const cards = ctx.message.text.split(' ').slice(2);
@@ -101,7 +104,7 @@ const addCards = ctx => {
     }
 
     Album.get(collectionName, sender)
-        .then(async ({ found, album }) => {
+        .then(async ({ found, album }: any) => {
             if (!found) {
                 ctx.replyWithMarkdown(
                     `${senderFirstName}, I did not find your *${collectionName}* album. If you want me to create one for you, use _/newAlbum ${collectionName}_.`
@@ -110,53 +113,54 @@ const addCards = ctx => {
                 console.log('[ALBUM/ADD CARDS] – Album retrieved');
                 album
                     .addCards(cards)
-                    .then(({ newCards, repes, newRepes }) => {
+                    .then(({ newCards, repes, newRepes }: any) => {
                         console.log('[ALBUM/ADD CARDS] – Cards added');
+
                         const addedText =
-                            newCards.size > 0
-                                ? `${senderFirstName}, I added *${
-                                      newCards.size
-                                  }* new cards into your *${collectionName}* album 😀:\n- ${[
-                                      ...newCards,
-                                  ].join('\n- ')}`
-                                : `${senderFirstName}, there were no new cards in this batch 😢.`;
+                            newCards.size > 0 ?
+                                `${senderFirstName}, I added *${
+                                    newCards.size
+                                }* new cards into your *${collectionName}* album 😀:\n- ${[
+                                    ...newCards,
+                                ].join('\n- ')}` :
+                                `${senderFirstName}, there were no new cards in this batch 😢.`;
                         const newRepesText =
-                            newRepes.size > 0
-                                ? `There were *${
-                                      newRepes.size
-                                  }* duplicated cards in this batch: 😕\n- ${[
-                                      ...newRepes,
-                                  ].join('\n- ')}`
-                                : `There were no duplicates in this batch! 😄`;
+                            newRepes.size > 0 ?
+                                `There were *${
+                                    newRepes.size
+                                }* duplicated cards in this batch: 😕\n- ${[
+                                    ...newRepes,
+                                ].join('\n- ')}` :
+                                'There were no duplicates in this batch! 😄';
                         const repesText =
-                            repes.size > 0
-                                ? `And *${
-                                      repes.size
-                                  }* cards were already in your album: 😫\n- ${[
-                                      ...repes,
-                                  ].join('\n- ')}`
-                                : `None of the added cards were already in your album! 🥳`;
+                            repes.size > 0 ?
+                                `And *${
+                                    repes.size
+                                }* cards were already in your album: 😫\n- ${[
+                                    ...repes,
+                                ].join('\n- ')}` :
+                                'None of the added cards were already in your album! 🥳';
                         const texts =
-                            newCards.size > 0
-                                ? [addedText, newRepesText, repesText]
-                                : [addedText, repesText];
+                            newCards.size > 0 ?
+                                [addedText, newRepesText, repesText] :
+                                [addedText, repesText];
                         ctx.replyWithMarkdown(texts.join('\n\n'));
                     })
-                    .catch(error => {
+                    .catch((error: any) => {
                         console.log('[ALBUM/ADD CARDS] – Error adding cards');
                         console.error(error);
                         ctx.reply('There was an error, try again later.');
                     });
             }
         })
-        .catch(error => {
+        .catch((error) => {
             console.log('[ALBUM/ADD CARDS] – Error retrieving album');
             console.error(error);
             ctx.reply('There was an error, try again later.');
         });
 };
 
-const tengui = ctx => {
+export const tengui = (ctx: any) => {
     console.log('[COMMANDS] – tengui');
     const [, collectionName] = ctx.message.text.split(' ');
     const sender = ctx.from.username;
@@ -168,9 +172,9 @@ const tengui = ctx => {
     }
 
     Collection.get(collectionName)
-        .then(collection => {
+        .then((collection: any) => {
             Album.get(collectionName, sender)
-                .then(async ({ found, album }) => {
+                .then(async ({ found, album }: any) => {
                     if (!found) {
                         ctx.replyWithMarkdown(
                             `${senderFirstName}, I did not find your *${collectionName}* album. If you want me to create one for you, use _/newAlbum ${collectionName}_.`
@@ -178,7 +182,8 @@ const tengui = ctx => {
                     } else {
                         const result = await album.tengui();
                         const tengui = [];
-                        for (card in result) {
+                        // eslint-disable-next-line guard-for-in
+                        for (const card in result) {
                             tengui.push(`${card} (${result[card]})`);
                         }
                         const count = tengui.length;
@@ -199,20 +204,20 @@ const tengui = ctx => {
                         }
                     }
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log('[ALBUM/TENGUI – Error retrieving album');
                     console.error(error);
                     ctx.reply('There was an error, try again later.');
                 });
         })
-        .catch(error => {
+        .catch((error) => {
             console.log('[ALBUM/TENGUI – Error retrieving collection');
             console.error(error);
             ctx.reply('There was an error, try again later.');
         });
 };
 
-const falti = ctx => {
+export const falti = (ctx: any) => {
     console.log('[COMMANDS] – falti');
     const [, collectionName] = ctx.message.text.split(' ');
     const sender = ctx.from.username;
@@ -224,9 +229,9 @@ const falti = ctx => {
     }
 
     Collection.get(collectionName)
-        .then(collection => {
+        .then((collection: any) => {
             Album.get(collectionName, sender)
-                .then(async ({ found, album }) => {
+                .then(async ({ found, album }: any) => {
                     if (!found) {
                         ctx.replyWithMarkdown(
                             `${senderFirstName}, I did not find your *${collectionName}* album. If you want me to create one for you, use _/newAlbum ${collectionName}_.`
@@ -251,20 +256,20 @@ const falti = ctx => {
                         }
                     }
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log('[ALBUM/FALTI – Error retrieving album');
                     console.error(error);
                     ctx.reply('There was an error, try again later.');
                 });
         })
-        .catch(error => {
+        .catch((error) => {
             console.log('[ALBUM/FALTI – Error retrieving collection');
             console.error(error);
             ctx.reply('There was an error, try again later.');
         });
 };
 
-const repes = ctx => {
+export const repes = (ctx: any) => {
     console.log('[COMMANDS] – repes');
     const [, collectionName] = ctx.message.text.split(' ');
     const sender = ctx.from.username;
@@ -276,7 +281,7 @@ const repes = ctx => {
     }
 
     Album.get(collectionName, sender)
-        .then(async ({ found, album }) => {
+        .then(async ({ found, album }: any) => {
             if (!found) {
                 ctx.replyWithMarkdown(
                     `${senderFirstName}, I did not find your *${collectionName}* album. If you want me to create one for you, use _/newAlbum ${collectionName}_.`
@@ -284,7 +289,8 @@ const repes = ctx => {
             } else {
                 const result = await album.repes();
                 const repes = [];
-                for (card in result) {
+                // eslint-disable-next-line guard-for-in
+                for (const card in result) {
                     repes.push(`${card} (${result[card]})`);
                 }
                 ctx.replyWithMarkdown(
@@ -296,14 +302,14 @@ const repes = ctx => {
                 );
             }
         })
-        .catch(error => {
+        .catch((error) => {
             console.log('[ALBUM/REPES] – Error retrieving album');
             console.error(error);
             ctx.reply('There was an error, try again later.');
         });
 };
 
-const count = ctx => {
+export const count = (ctx: any) => {
     console.log('[COMMANDS] – count');
     const [, collectionName] = ctx.message.text.split(' ');
     const sender = ctx.from.username;
@@ -315,9 +321,9 @@ const count = ctx => {
     }
 
     Collection.get(collectionName)
-        .then(collection => {
+        .then((collection: any) => {
             Album.get(collectionName, sender)
-                .then(async ({ found, album }) => {
+                .then(async ({ found, album }: any) => {
                     if (!found) {
                         ctx.replyWithMarkdown(
                             `${senderFirstName}, I did not find your *${collectionName}* album. If you want me to create one for you, use _/newAlbum ${collectionName}_.`
@@ -332,68 +338,57 @@ const count = ctx => {
                         );
                     }
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log('[ALBUM/COUNT] – Error retrieving album');
                     console.error(error);
                     ctx.reply('There was an error, try again later.');
                 });
         })
-        .catch(error => {
+        .catch((error) => {
             console.log('[ALBUM/COUNT] – Error retrieving collection');
             console.error(error);
             ctx.reply('There was an error, try again later.');
         });
 };
 
-const update = ctx => {
-    console.log('[COMMANDS] – update');
-    const [, collectionName] = ctx.message.text.split(' ');
-    const sender = ctx.from.username;
-    const senderFirstName = ctx.from.first_name;
+// Deprecated
+// export const update = (ctx: any) => {
+//     console.log('[COMMANDS] – update');
+//     const [, collectionName] = ctx.message.text.split(' ');
+//     const sender = ctx.from.username;
+//     const senderFirstName = ctx.from.first_name;
 
-    if (!collectionName || !sender) {
-        ctx.reply(CHECK_HELP_COPY);
-        return;
-    }
+//     if (!collectionName || !sender) {
+//         ctx.reply(CHECK_HELP_COPY);
+//         return;
+//     }
 
-    Collection.get(collectionName)
-        .then(collection => {
-            Album.getLegacy(collectionName, sender)
-                .then(async ({ found, album }) => {
-                    if (!found) {
-                        ctx.replyWithMarkdown(
-                            `${senderFirstName}, I did not find your *${collectionName}* album. If you want me to create one for you, use _/newAlbum ${collectionName}_.`
-                        );
-                    } else {
-                        const result = await album.update();
-                        if (result) {
-                            ctx.replyWithMarkdown(
-                                `${senderFirstName}, the Collection *${collectionName}* has been updated.`
-                            );
-                        } else {
-                            ctx.replyWithMarkdown(
-                                `There was an error updating your Collection`
-                            );
-                        }
-                    }
-                })
-                .catch(() => {
-                    ctx.reply('There was an error, try again later.');
-                });
-        })
-        .catch(() => {
-            ctx.reply('There was an error, try again later.');
-        });
-};
-
-module.exports = {
-    newCollection,
-    getCollections,
-    newAlbum,
-    addCards,
-    tengui,
-    falti,
-    repes,
-    count,
-    update,
-};
+//     Collection.get(collectionName)
+//         .then((collection: any) => {
+//             Album.getLegacy(collectionName, sender)
+//                 .then(async ({ found, album }: any) => {
+//                     if (!found) {
+//                         ctx.replyWithMarkdown(
+//                             `${senderFirstName}, I did not find your *${collectionName}* album. If you want me to create one for you, use _/newAlbum ${collectionName}_.`
+//                         );
+//                     } else {
+//                         const result = await album.update();
+//                         if (result) {
+//                             ctx.replyWithMarkdown(
+//                                 `${senderFirstName}, the Collection *${collectionName}* has been updated.`
+//                             );
+//                         } else {
+//                             ctx.replyWithMarkdown(
+//                                 'There was an error updating your Collection'
+//                             );
+//                         }
+//                     }
+//                 })
+//                 .catch(() => {
+//                     ctx.reply('There was an error, try again later.');
+//                 });
+//         })
+//         .catch(() => {
+//             ctx.reply('There was an error, try again later.');
+//         });
+// };

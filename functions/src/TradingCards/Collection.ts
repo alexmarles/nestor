@@ -1,15 +1,20 @@
-const { v4: uuidv4 } = require('uuid');
-const { database } = require('../config/database');
+import { v4 as uuidv4 } from 'uuid';
+import { database } from '../../config/database';
 
-class Collection {
-    constructor(uid, name, numCards, author) {
+export class Collection {
+    _uid: any;
+    _name: any;
+    _numCards: any;
+    _author: any;
+
+    constructor(uid: any, name: any, numCards: any, author: any) {
         this._uid = uid;
         this._name = name;
         this._numCards = numCards;
         this._author = author;
     }
 
-    static create(name, numCards, author) {
+    static create(name: any, numCards: number, author: any) {
         return database.ref(`collections/${name}`).set({
             uid: uuidv4(),
             name: name,
@@ -18,11 +23,11 @@ class Collection {
         });
     }
 
-    static get(name) {
+    static get(name: string) {
         const result = new Promise((resolve, reject) => {
             database
                 .ref(`collections/${name}`)
-                .once('value', snap => {
+                .once('value', (snap) => {
                     const data = snap.val();
                     resolve(
                         new this(
@@ -33,7 +38,7 @@ class Collection {
                         )
                     );
                 })
-                .catch(err => {
+                .catch((err) => {
                     reject(err);
                 });
         });
@@ -43,20 +48,22 @@ class Collection {
     static getAll() {
         const result = new Promise((resolve, reject) => {
             database
-                .ref(`collections`)
-                .once('value', snap => {
+                .ref('collections')
+                .once('value', (snap) => {
                     const data = snap.val();
-                    const result = Object.values(data).map(collection => {
-                        return new this(
-                            collection.uid,
-                            collection.name,
-                            collection.numCards,
-                            collection.author
-                        );
-                    });
+                    const result = Object.values(data).map(
+                        (collection: any) => {
+                            return new this(
+                                collection.uid,
+                                collection.name,
+                                collection.numCards,
+                                collection.author
+                            );
+                        }
+                    );
                     resolve(result);
                 })
-                .catch(err => {
+                .catch((err) => {
                     reject(err);
                 });
         });
@@ -79,7 +86,3 @@ class Collection {
         return this._author;
     }
 }
-
-module.exports = {
-    Collection,
-};

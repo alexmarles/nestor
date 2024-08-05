@@ -1,53 +1,60 @@
-const { v4: uuidv4 } = require('uuid');
-const { database } = require('../config/database');
+import { v4 as uuidv4 } from 'uuid';
+import { database } from '../../config/database';
 
-const { Collection } = require('./Collection');
+import { Collection } from './Collection';
 
-class Album {
-    constructor(collectionName, username, cards) {
+export class Album {
+    _path: string;
+    _collection: string;
+    _username: string;
+    _cards: Record<string, any>;
+
+    constructor(collectionName: any, username: any, cards: any) {
         this._path = `albums/${collectionName}/${username}`;
         this._collection = collectionName;
         this._username = username;
         this._cards = cards;
     }
 
-    static create(collectionName, username) {
+    static create(collectionName: any, username: any) {
         console.log('[ALBUM/CREATE] – Creating Album');
         return database.ref(`albums/${collectionName}/${username}`).set({
             uid: uuidv4(),
         });
     }
 
-    static createCollaborative(collectionName, username, collabs) {
+    static createCollaborative(
+        collectionName: any,
+        username: any,
+        collabs: any[]
+    ) {
         console.log('[ALBUM/CREATE] – Creating Collaborative Album');
         const ref = database.ref(`albums/${collectionName}/${username}`).set({
             uuid: uuidv4(),
             collabs,
         });
-        if (ref) {
-            collabs.forEach(collab => {
-                database.ref(`albums/${collectionName}/${collab}`).set({
-                    uuid: uuidv4(),
-                    owner: username,
-                });
+        collabs.forEach((collab: any) => {
+            database.ref(`albums/${collectionName}/${collab}`).set({
+                uuid: uuidv4(),
+                owner: username,
             });
-        }
+        });
         return ref;
     }
 
-    static get(collectionName, username) {
+    static get(collectionName: any, username: any) {
         console.log('[ALBUM/GET] – Retrieving Album');
         const result = new Promise((resolve, reject) => {
             database
                 .ref(`albums/${collectionName}/${username}`)
-                .once('value', snap => {
+                .once('value', (snap: any) => {
                     console.log('[ALBUM/GET] – Album Retrieved');
                     if (snap.hasChild('owner')) {
                         console.log('[ALBUM/GET] – Album is Collaborative');
                         const owner = snap.child('owner').val();
                         database
                             .ref(`albums/${collectionName}/${owner}`)
-                            .once('value', originalSnap => {
+                            .once('value', (originalSnap: any) => {
                                 const cards =
                                     originalSnap.hasChild('cards') &&
                                     originalSnap.child('cards').toJSON();
@@ -93,7 +100,7 @@ class Album {
                         }
                     }
                 })
-                .catch(err => {
+                .catch((err: any) => {
                     console.log('[ALBUM/GET] – Album Not Found');
                     reject(err);
                 });
@@ -101,13 +108,13 @@ class Album {
         return result;
     }
 
-    async addCards(cards) {
+    async addCards(cards: any[]) {
         const newCards = new Set();
         const repes = new Set();
         const newRepes = new Set();
-        const dict = {};
-        cards.forEach(card => {
-            dict[card] = !!dict[card] ? dict[card] + 1 : 1;
+        const dict: Record<string, any> = {};
+        cards.forEach((card: string | number) => {
+            dict[card] = dict[card] ? dict[card] + 1 : 1;
         });
         for (const [card, value] of Object.entries(dict)) {
             const count = this._cards[card] || 0;
@@ -131,7 +138,7 @@ class Album {
     }
 
     async falti() {
-        const collectionData = await Collection.get(this._collection);
+        const collectionData: any = await Collection.get(this._collection);
         const cards = await this._cards;
         const falti = [];
         for (let i = 1; i <= collectionData.getNumCards(); i++) {
@@ -141,7 +148,7 @@ class Album {
     }
 
     async repes() {
-        const repes = {};
+        const repes: Record<string, any> = {};
         for (const card in this._cards) {
             if (this._cards[card] > 1) {
                 repes[card] = this._cards[card];
@@ -150,7 +157,3 @@ class Album {
         return repes;
     }
 }
-
-module.exports = {
-    Album,
-};

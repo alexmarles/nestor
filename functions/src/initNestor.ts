@@ -1,4 +1,4 @@
-const {
+import {
     newCollection,
     getCollections,
     newAlbum,
@@ -7,8 +7,8 @@ const {
     falti,
     repes,
     count,
-    update,
-} = require('./TradingCards');
+    // update,
+} from './TradingCards';
 
 const HELP_COPY = `
 I can help you manage your Trading Cards Collections.
@@ -40,15 +40,15 @@ _/count [collection]_ – get stats for your album
 (Example: \`/count Animales\`)
 `;
 
-const initNestor = bot => {
-    bot.start(ctx => {
+export const initNestor = (bot: any) => {
+    bot.start((ctx: any) => {
         if (!ctx.message.from.username) return;
         if (!ctx.message.from.first_name) return;
 
         ctx.reply(`Welcome ${ctx.message.from.username}`);
     });
 
-    bot.help(ctx => {
+    bot.help((ctx: any) => {
         ctx.reply(HELP_COPY);
     });
 
@@ -68,12 +68,12 @@ const initNestor = bot => {
 
     bot.command('count', count);
 
-    bot.command('update', update);
+    // bot.command('update', update);
 
-    bot.command('health', ctx => ctx.reply('I am ok!'));
+    bot.command('health', (ctx: any) => ctx.reply('I am ok!'));
 
     // Echo
-    bot.on('message', ctx => ctx.copyMessage(ctx.chat.id, ctx.message));
+    bot.on('message', (ctx: any) => ctx.copyMessage(ctx.chat.id, ctx.message));
 
     bot.launch();
 };
