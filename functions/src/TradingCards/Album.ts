@@ -133,6 +133,28 @@ export class Album {
         };
     }
 
+    async dealCards(cards: any[]) {
+        const dealtCards = new Set();
+        const missingCards = new Set();
+        const dict: Record<string, any> = {};
+        cards.forEach((card: string | number) => {
+            dict[card] = dict[card] ? dict[card] + 1 : 1;
+        });
+        for (const [card, value] of Object.entries(dict)) {
+            const count = this._cards[card] || 0;
+            if (count > value) {
+                dealtCards.add(card);
+                database.ref(`${this._path}/cards/${card}`).set(count - value);
+            } else {
+                missingCards.add(card);
+            }
+        }
+        return {
+            dealtCards,
+            missingCards,
+        };
+    }
+
     async tengui() {
         return this._cards;
     }

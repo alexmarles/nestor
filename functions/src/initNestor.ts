@@ -3,6 +3,7 @@ import {
     getCollections,
     newAlbum,
     addCards,
+    dealCards,
     tengui,
     falti,
     repes,
@@ -30,6 +31,8 @@ _/newAlbum [collection] with [user]_ – create a collaborative Album for a Coll
 *Cards*
 _/addCards [collection] [list of cards]_ – add cards to an Album
 (Example: \`/addCards Animales 1 5 9\`)
+_/dealCards [collection] [list of cards]_ - remove cards from an Album
+(Example: \`/dealCards Animales 3 6 7\`)
 _/tengui [collection]_ – get own cards
 (Example: \`/tengui Animales\`)
 _/falti [collection]_ – get missing cards
@@ -59,6 +62,8 @@ export const initNestor = (bot: any) => {
     bot.command('newAlbum', newAlbum);
 
     bot.command('addCards', addCards);
+
+    bot.command('deal', dealCards);
 
     bot.command('tengui', tengui);
 

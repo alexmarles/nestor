@@ -160,6 +160,65 @@ export const addCards = (ctx: any) => {
         });
 };
 
+export const dealCards = (ctx: any) => {
+    console.log('[COMMANDS] – dealCards');
+    const [, collectionName] = ctx.message.text.split(' ');
+    const cards = ctx.message.text.split(' ').slice(2);
+    const sender = ctx.from.username;
+    const senderFirstName = ctx.from.first_name;
+
+    if (!collectionName || !sender) {
+        ctx.reply(CHECK_HELP_COPY);
+        return;
+    }
+
+    Album.get(collectionName, sender)
+        .then(async ({ found, album }: any) => {
+            if (!found) {
+                ctx.replyWithMarkdown(
+                    `${senderFirstName}, I did not find your *${collectionName}* album. If you want me to create one for you, use _/newAlbum ${collectionName}_.`
+                );
+            } else {
+                console.log('[ALBUM/DEAL CARDS] – Album retrieved');
+                album
+                    .dealCards(cards)
+                    .then(({ dealtCards, missingCards }: any) => {
+                        console.log('[ALBUM/DEAL CARDS] – Cards dealed');
+
+                        const dealtText =
+                            dealtCards.size > 0 ?
+                                `${senderFirstName}, I dealt *${
+                                    dealtCards.size
+                                }* cards from your *${collectionName}* album 😀:\n- ${[
+                                    ...dealtCards,
+                                ].join('\n- ')}` :
+                                `${senderFirstName}, I could not deal any cards 😢.`;
+                        const missingText =
+                            missingCards.size > 0 ?
+                                `There were *${
+                                    missingCards.size
+                                }* cards in this batch that you don't own or you don't have enough do deal with: 😕\n- ${[
+                                    ...missingCards,
+                                ].join('\n- ')}` :
+                                'You dealt a perfect batch! 🥳';
+                        ctx.replyWithMarkdown(
+                            [dealtText, missingText].join('\n\n')
+                        );
+                    })
+                    .catch((error: any) => {
+                        console.log('[ALBUM/DEAL CARDS] – Error dealing cards');
+                        console.error(error);
+                        ctx.reply('There was an error, try again later.');
+                    });
+            }
+        })
+        .catch((error) => {
+            console.log('[ALBUM/DEAL CARDS] – Error retrieving album');
+            console.error(error);
+            ctx.reply('There was an error, try again later.');
+        });
+};
+
 export const tengui = (ctx: any) => {
     console.log('[COMMANDS] – tengui');
     const [, collectionName] = ctx.message.text.split(' ');
