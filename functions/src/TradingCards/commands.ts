@@ -197,7 +197,7 @@ export const dealCards = (ctx: any) => {
                             missingCards.size > 0 ?
                                 `There were *${
                                     missingCards.size
-                                }* cards in this batch that you don't own or you don't have enough do deal with 😕\n- ${[
+                                }* cards in this batch that you don't own or you don't have enough to deal with 😕\n- ${[
                                     ...missingCards,
                                 ].join('\n- ')}` :
                                 'You dealt a perfect batch! 🥳';
