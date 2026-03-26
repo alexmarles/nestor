@@ -38,4 +38,5 @@ if (!process.env.BOT_TOKEN) {
 export const nestorBot = onRequest({
     region: process.env.REGION as string,
     minInstances: Number.parseInt(process.env.MIN_INSTANCES as string),
+    invoker: 'public',
 }, app);
