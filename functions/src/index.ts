@@ -1,4 +1,5 @@
-import * as functions from 'firebase-functions';
+import { onRequest } from 'firebase-functions/v2/https';
+import { logger } from 'firebase-functions';
 import express from 'express';
 import 'dotenv/config';
 
@@ -7,13 +8,11 @@ import { Telegraf } from 'telegraf';
 import { initNestor } from './initNestor';
 
 const app = express();
-// let telegramStatus = 'Bot is not loaded';
 
 if (!process.env.BOT_TOKEN) {
-    functions.logger.info('BOT_TOKEN is not defined.', {
+    logger.info('BOT_TOKEN is not defined.', {
         structuredData: true,
     });
-    // telegramStatus = 'BOT_TOKEN is not defined.';
 } else {
     const bot = new Telegraf(process.env.BOT_TOKEN, {
         telegram: { webhookReply: true },
@@ -22,8 +21,8 @@ if (!process.env.BOT_TOKEN) {
     bot.hears('hi', (ctx) => {
         const message = `Hey there, it is ${new Date().toLocaleString()} now.`;
         ctx.reply(message);
-        functions.logger.info(message, { structuredData: true });
-        functions.logger.info(
+        logger.info(message, { structuredData: true });
+        logger.info(
             `${ctx.message.from.username}: ${ctx.from.id}: ${ctx.message.chat.id}`,
             { structuredData: true }
         );
@@ -34,12 +33,9 @@ if (!process.env.BOT_TOKEN) {
     app.use(
         bot.webhookCallback('/telegram', { secretToken: process.env.API_TOKEN })
     );
-    // telegramStatus = 'Bot is loaded.';
 }
 
-exports.nestorBot = functions
-    .region(process.env.REGION as string)
-    .runWith({
-        minInstances: Number.parseInt(process.env.MIN_INSTANCES as string),
-    })
-    .https.onRequest(app);
+export const nestorBot = onRequest({
+    region: process.env.REGION as string,
+    minInstances: Number.parseInt(process.env.MIN_INSTANCES as string),
+}, app);
