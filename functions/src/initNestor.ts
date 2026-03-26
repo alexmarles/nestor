@@ -79,8 +79,6 @@ export const initNestor = (bot: any) => {
 
     // Echo
     bot.on('message', (ctx: any) => ctx.copyMessage(ctx.chat.id, ctx.message));
-
-    bot.launch();
 };
 
 module.exports = {
