@@ -10,6 +10,12 @@ import {
     count,
     // update,
 } from './TradingCards';
+import {
+    activities,
+    nowReading,
+    nowPlaying,
+    removeActivity,
+} from './Activities';
 
 const HELP_COPY = `
 I can help you manage your Trading Cards Collections.
@@ -41,6 +47,15 @@ _/repes [collection]_ – get repeated cards
 (Example: \`/repes Animales\`)
 _/count [collection]_ – get stats for your album
 (Example: \`/count Animales\`)
+
+*Activities*
+_/activities_ – see current activities
+_/nowReading [title] by [author]_ – add a book
+(Example: \`/nowReading Ready Player One by Ernest Cline\`)
+_/nowPlaying [title] on [platform]_ – add a game
+(Example: \`/nowPlaying The Legend of Zelda on Nintendo Switch\`)
+_/removeActivity [title]_ – remove an activity
+(Example: \`/removeActivity Ready Player One\`)
 `;
 
 export const initNestor = (bot: any) => {
@@ -74,6 +89,14 @@ export const initNestor = (bot: any) => {
     bot.command('count', count);
 
     // bot.command('update', update);
+
+    bot.command('activities', activities);
+
+    bot.command('nowReading', nowReading);
+
+    bot.command('nowPlaying', nowPlaying);
+
+    bot.command('removeActivity', removeActivity);
 
     bot.command('health', (ctx: any) => ctx.reply('I am ok!'));
 

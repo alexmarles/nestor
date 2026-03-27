@@ -6,6 +6,7 @@ build
 *-debug.log
 .runtimeconfig.json
 FirebaseService.json
+WebpageService.json
 webhooks.sh
 
 # Compiled JavaScript files
