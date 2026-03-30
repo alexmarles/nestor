@@ -1,0 +1,1 @@
+export { nlpMiddleware } from './middleware';

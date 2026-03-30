@@ -19,6 +19,44 @@ export const activities = async (ctx: any) => {
     }
 };
 
+export const listBooks = async (ctx: any) => {
+    console.log('[COMMANDS] – listBooks');
+
+    try {
+        const books = await Activity.getByType('book');
+
+        if (books.length === 0) {
+            ctx.reply('No books right now.');
+            return;
+        }
+
+        const formatted = books.map((a) => a.format()).join('\n');
+        ctx.replyWithMarkdown(formatted);
+    } catch (error) {
+        console.error(error);
+        ctx.reply('There was an error, try again later.');
+    }
+};
+
+export const listGames = async (ctx: any) => {
+    console.log('[COMMANDS] – listGames');
+
+    try {
+        const games = await Activity.getByType('videogame');
+
+        if (games.length === 0) {
+            ctx.reply('No games right now.');
+            return;
+        }
+
+        const formatted = games.map((a) => a.format()).join('\n');
+        ctx.replyWithMarkdown(formatted);
+    } catch (error) {
+        console.error(error);
+        ctx.reply('There was an error, try again later.');
+    }
+};
+
 export const nowReading = async (ctx: any) => {
     console.log('[COMMANDS] – nowReading');
     const text = ctx.message.text.replace(/^\/nowReading\s*/, '');
@@ -34,6 +72,11 @@ export const nowReading = async (ctx: any) => {
         parts.length > 1 ? parts.slice(1).join(' by ').trim() : undefined;
 
     try {
+        if (await Activity.exists(title)) {
+            ctx.reply(`"${title}" is already logged.`);
+            return;
+        }
+
         const activity = await Activity.add({
             type: 'book',
             title,
@@ -61,6 +104,11 @@ export const nowPlaying = async (ctx: any) => {
         parts.length > 1 ? parts.slice(1).join(' on ').trim() : undefined;
 
     try {
+        if (await Activity.exists(title)) {
+            ctx.reply(`"${title}" is already logged.`);
+            return;
+        }
+
         const activity = await Activity.add({
             type: 'videogame',
             title,

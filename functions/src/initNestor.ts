@@ -16,8 +16,9 @@ import {
     nowPlaying,
     removeActivity,
 } from './Activities';
+import { nlpMiddleware } from './NLP';
 
-const HELP_COPY = `
+export const HELP_COPY = `
 I can help you manage your Trading Cards Collections.
 
 Use the following commands if you need me.
@@ -100,8 +101,7 @@ export const initNestor = (bot: any) => {
 
     bot.command('health', (ctx: any) => ctx.reply('I am ok!'));
 
-    // Echo
-    bot.on('message', (ctx: any) => ctx.copyMessage(ctx.chat.id, ctx.message));
+    bot.on('message', nlpMiddleware);
 };
 
 module.exports = {
