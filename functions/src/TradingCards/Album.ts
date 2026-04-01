@@ -73,7 +73,14 @@ export class Album {
                                     console.log(
                                         '[ALBUM/GET] – Cards Not Found'
                                     );
-                                    resolve({ found: false, album: undefined });
+                                    resolve({
+                                        found: true,
+                                        album: new this(
+                                            collectionName,
+                                            owner,
+                                            []
+                                        ),
+                                    });
                                 }
                             });
                     } else {
