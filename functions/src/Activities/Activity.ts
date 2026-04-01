@@ -1,4 +1,4 @@
-import { firestore } from '../../config/firestore';
+import { firestore } from '../../config/firebase';
 
 export interface ActivityData {
     type: 'book' | 'videogame';
