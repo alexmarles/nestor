@@ -24,7 +24,7 @@ Tutorial from Kai Kok Chew [here](https://medium.com/@kaikok/telegram-bot-with-c
 | Command | Description | Example |
 |---|---|---|
 | `/addCards [collection] [list of cards]` | Add cards to an Album | `/addCards Animales 1 5 9` |
-| `/deal [collection] [list of cards]` | Remove cards from an Album | `/deal Animales 3 6 7` |
+| `/dealCards [collection] [list of cards]` | Remove cards from an Album | `/dealCards Animales 3 6 7` |
 | `/tengui [collection]` | Get own cards | `/tengui Animales` |
 | `/falti [collection]` | Get missing cards | `/falti Animales` |
 | `/repes [collection]` | Get repeated cards | `/repes Animales` |

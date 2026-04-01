@@ -86,7 +86,7 @@ const routes: Record<string, RouteConfig> = {
     dealCards: {
         handler: dealCards,
         buildCommandText: (p) =>
-            `/deal ${p.collectionName} ${p.cards.join(' ')}`,
+            `/dealCards ${p.collectionName} ${p.cards.join(' ')}`,
     },
     tengui: {
         handler: tengui,

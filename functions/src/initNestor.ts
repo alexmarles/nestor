@@ -12,6 +12,8 @@ import {
 } from './TradingCards';
 import {
     activities,
+    listBooks,
+    listGames,
     nowReading,
     nowPlaying,
     removeActivity,
@@ -51,6 +53,8 @@ _/count [collection]_ – get stats for your album
 
 *Activities*
 _/activities_ – see current activities
+_/listBooks_ – see current books
+_/listGames_ – see current games
 _/nowReading [title] by [author]_ – add a book
 (Example: \`/nowReading Ready Player One by Ernest Cline\`)
 _/nowPlaying [title] on [platform]_ – add a game
@@ -79,7 +83,7 @@ export const initNestor = (bot: any) => {
 
     bot.command('addCards', addCards);
 
-    bot.command('deal', dealCards);
+    bot.command('dealCards', dealCards);
 
     bot.command('tengui', tengui);
 
@@ -92,6 +96,10 @@ export const initNestor = (bot: any) => {
     // bot.command('update', update);
 
     bot.command('activities', activities);
+
+    bot.command('listBooks', listBooks);
+
+    bot.command('listGames', listGames);
 
     bot.command('nowReading', nowReading);
 
