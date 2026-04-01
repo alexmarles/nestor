@@ -28,7 +28,7 @@ Use the following commands if you need me.
 *Collections*
 _/newCollection [name] [# of cards]_ – create a new Collection
 (Example: \`/newCollection Animales 276\`)
-_/getCollections – list all Collections
+_/getCollections_ – list all Collections
 (Example: \`/getCollections\`)
 
 *Albums*
@@ -72,7 +72,7 @@ export const initNestor = (bot: any) => {
     });
 
     bot.help((ctx: any) => {
-        ctx.reply(HELP_COPY);
+        ctx.replyWithMarkdown(HELP_COPY);
     });
 
     bot.command('newCollection', newCollection);
