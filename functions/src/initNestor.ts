@@ -8,7 +8,6 @@ import {
     falti,
     repes,
     count,
-    // update,
 } from './TradingCards';
 import {
     activities,
@@ -92,8 +91,6 @@ export const initNestor = (bot: any) => {
     bot.command('repes', repes);
 
     bot.command('count', count);
-
-    // bot.command('update', update);
 
     bot.command('activities', activities);
 
