@@ -1,0 +1,138 @@
+{
+  "riderProfile": {
+    "name": "Example Rider",
+    "runsTemperature": "slightly warm",
+    "sweatProfile": "average",
+    "ridingStyle": "Endurance road rides with occasional long descents",
+    "notes": [
+      "Prefers starting a little cool rather than overheating later",
+      "Gets cold hands before core temperature becomes a problem"
+    ]
+  },
+  "preferences": {
+    "priorities": [
+      "Avoid overheating",
+      "Stay safe on windy descents",
+      "Keep rain setup practical"
+    ],
+    "likes": [
+      "Gilet instead of jacket when conditions allow",
+      "Layering with removable warmers"
+    ],
+    "dislikes": [
+      "Bulky jackets in mild weather"
+    ],
+    "alwaysPack": [
+      "Packable gilet when the forecast is uncertain"
+    ],
+    "neverRecommend": [
+      "Anything not listed in wardrobe"
+    ]
+  },
+  "decisionRules": [
+    {
+      "condition": "Start temperature below 8C or long exposed descent after sweating",
+      "recommendation": "Bias toward more insulation and full-finger gloves"
+    },
+    {
+      "condition": "Strong wind or meaningful rain chance",
+      "recommendation": "Prioritize outer layer protection over the lighter setup"
+    }
+  ],
+  "routeContext": {
+    "typicalRoutes": [
+      "2 to 4 hour road rides",
+      "Hilly routes with exposed descents"
+    ],
+    "notes": [
+      "Weather on descents matters more than short climbs"
+    ]
+  },
+  "wardrobe": [
+    {
+      "name": "Short sleeve jersey",
+      "category": "jersey",
+      "notes": [
+        "Main warm-weather jersey"
+      ],
+      "preferredConditions": [
+        "Mild to warm weather"
+      ]
+    },
+    {
+      "name": "Light sleeveless base layer",
+      "category": "base-layer",
+      "notes": [
+        "Good default base layer"
+      ]
+    },
+    {
+      "name": "Thermal long sleeve jersey",
+      "category": "jersey",
+      "preferredConditions": [
+        "Cool dry mornings"
+      ]
+    },
+    {
+      "name": "Packable gilet",
+      "category": "outer-layer",
+      "preferredConditions": [
+        "Windy starts",
+        "Long descents",
+        "Variable conditions"
+      ]
+    },
+    {
+      "name": "Rain jacket",
+      "category": "outer-layer",
+      "preferredConditions": [
+        "Rain",
+        "Cold wind"
+      ]
+    },
+    {
+      "name": "Bib shorts",
+      "category": "bottoms"
+    },
+    {
+      "name": "Thermal bib tights",
+      "category": "bottoms",
+      "preferredConditions": [
+        "Cold rides"
+      ]
+    },
+    {
+      "name": "Arm warmers",
+      "category": "accessory"
+    },
+    {
+      "name": "Leg warmers",
+      "category": "accessory"
+    },
+    {
+      "name": "Summer gloves",
+      "category": "gloves"
+    },
+    {
+      "name": "Full-finger gloves",
+      "category": "gloves",
+      "preferredConditions": [
+        "Cold starts",
+        "Long descents"
+      ]
+    },
+    {
+      "name": "Toe covers",
+      "category": "footwear"
+    },
+    {
+      "name": "Winter socks",
+      "category": "footwear"
+    }
+  ],
+  "responsePreferences": {
+    "style": "concise",
+    "includePackList": true,
+    "includeAlternative": true
+  }
+}

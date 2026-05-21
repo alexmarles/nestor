@@ -22,6 +22,9 @@ Trading Cards:
 - repes: Show repeated cards. Parameters: collectionName (required).
 - count: Show album statistics. Parameters: collectionName (required).
 
+Cycling:
+- cyclingWear: Recommend what cycling clothes to wear for a ride based on the user's stored cycling profile and the forecast or route details in the message. Parameters: requestText (required, string containing the user's full request/forecast). Use this when the user asks what to wear, what kit to use, whether to bring layers, or shares a forecast to decide cycling clothes.
+
 Other:
 - help: Show help text. No parameters.
 - health: Check bot status. No parameters.
