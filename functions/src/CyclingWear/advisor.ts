@@ -1,5 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 
+import { SupportedLanguage } from './language';
 import { CyclingProfile } from './types';
 
 const client = new Anthropic();
@@ -7,13 +8,14 @@ const MODEL = 'claude-haiku-4-5-20251001';
 
 export async function generateCyclingWearAdvice(
     profile: CyclingProfile,
-    forecastRequest: string
+    forecastRequest: string,
+    language?: SupportedLanguage | null
 ): Promise<string> {
     const response = await client.messages.create({
         model: MODEL,
         max_tokens: 500,
         temperature: 0.3,
-        system: buildSystemPrompt(profile),
+        system: buildSystemPrompt(profile, language),
         messages: [{ role: 'user', content: forecastRequest }],
     });
 
@@ -27,7 +29,12 @@ export async function generateCyclingWearAdvice(
     return text;
 }
 
-function buildSystemPrompt(profile: CyclingProfile): string {
+function buildSystemPrompt(
+    profile: CyclingProfile,
+    language?: SupportedLanguage | null
+): string {
+    const languageInstruction = getLanguageInstruction(language);
+
     return [
         'You are a cycling clothing advisor for a Telegram bot.',
         [
@@ -47,10 +54,11 @@ function buildSystemPrompt(profile: CyclingProfile): string {
             'If two setups are plausible, prefer the slightly safer one',
             'and mention the lighter alternative in one short line.',
         ].join(' '),
+        languageInstruction,
         'If the forecast is incomplete, make the smallest reasonable assumption and state it briefly.',
         'Keep the answer concise and practical.',
-        'Use this format:',
-        'Ride kit:',
+        'Use this 3-part structure with headings localized to the reply language:',
+        'Riding kit:',
         '- item',
         '',
         'Pack:',
@@ -67,4 +75,22 @@ function buildSystemPrompt(profile: CyclingProfile): string {
         'Cycling profile JSON:',
         JSON.stringify(profile, null, 2),
     ].join('\n');
+}
+
+function getLanguageInstruction(
+    language?: SupportedLanguage | null
+): string {
+    switch (language) {
+    case 'es':
+        return 'Reply in Spanish.';
+    case 'ca':
+        return 'Reply in Catalan.';
+    case 'en':
+        return 'Reply in English.';
+    default:
+        return [
+            'Reply in the same language as the user request.',
+            'Support English, Spanish, and Catalan.',
+        ].join(' ');
+    }
 }
