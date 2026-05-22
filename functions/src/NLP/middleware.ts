@@ -1,3 +1,5 @@
+import { cyclingWear } from '../CyclingWear';
+import { hasSupportedTelegramImage } from '../CyclingWear/image';
 import { parseIntent } from './parseIntent';
 import { routeIntent } from './router';
 
@@ -7,6 +9,28 @@ export async function nlpMiddleware(ctx: any): Promise<void> {
     if (!message) return;
 
     try {
+        if (message.kind === 'image') {
+            console.log(
+                `[NLP] Processing image${message.text ? ` with caption: "${message.text}"` : ''}`
+            );
+
+            if (message.debug) {
+                await ctx.reply(
+                    formatDebugMessage({
+                        intent: 'cyclingWear',
+                        params: {
+                            requestText: message.text,
+                            hasImage: true,
+                        },
+                        confidence: 1,
+                    })
+                );
+            }
+
+            await cyclingWear(ctx);
+            return;
+        }
+
         console.log(`[NLP] Processing: "${message.text}"`);
         const parsed = await parseIntent(message.text);
         console.log(`[NLP] Parsed: ${JSON.stringify(parsed)}`);
@@ -26,18 +50,41 @@ export async function nlpMiddleware(ctx: any): Promise<void> {
 
 function extractProcessableMessage(
     ctx: any
-): { text: string; debug: boolean } | null {
+): { kind: 'text' | 'image'; text: string; debug: boolean } | null {
     const message = ctx.message;
-    if (!message?.text) return null;
+    const chatType = ctx.chat?.type;
+    const text = message?.text;
+    const caption = message?.caption ?? '';
+    const hasImage = hasSupportedTelegramImage(message);
 
-    const text = message.text;
+    if (hasImage) {
+        if (chatType === 'private') {
+            return normalizeDebugOption('image', caption, true);
+        }
+
+        if (chatType === 'group' || chatType === 'supergroup') {
+            const botUsername = ctx.botInfo?.username;
+            if (!botUsername) return null;
+
+            const mentionRegex = new RegExp(`@${botUsername}\\b`, 'gi');
+            if (!mentionRegex.test(caption)) return null;
+
+            return normalizeDebugOption(
+                'image',
+                caption.replace(new RegExp(`@${botUsername}\\b`, 'gi'), '').trim(),
+                true
+            );
+        }
+
+        return null;
+    }
+
+    if (!text) return null;
 
     if (text.startsWith('/')) return null;
 
-    const chatType = ctx.chat?.type;
-
     if (chatType === 'private') {
-        return normalizeDebugOption(text);
+        return normalizeDebugOption('text', text, false);
     }
 
     if (chatType === 'group' || chatType === 'supergroup') {
@@ -48,7 +95,9 @@ function extractProcessableMessage(
         if (!mentionRegex.test(text)) return null;
 
         return normalizeDebugOption(
-            text.replace(new RegExp(`@${botUsername}\\b`, 'gi'), '').trim()
+            'text',
+            text.replace(new RegExp(`@${botUsername}\\b`, 'gi'), '').trim(),
+            false
         );
     }
 
@@ -56,15 +105,18 @@ function extractProcessableMessage(
 }
 
 function normalizeDebugOption(
-    text: string
-): { text: string; debug: boolean } | null {
+    kind: 'text' | 'image',
+    text: string,
+    allowEmpty: boolean
+): { kind: 'text' | 'image'; text: string; debug: boolean } | null {
     const debugRegex = /(?:^|\s)-debug(?:\s|$)/gi;
     const debug = debugRegex.test(text);
     const normalizedText = text.replace(debugRegex, ' ').trim();
 
-    if (!normalizedText) return null;
+    if (!normalizedText && !allowEmpty) return null;
 
     return {
+        kind,
         text: normalizedText,
         debug,
     };

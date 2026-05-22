@@ -6,6 +6,7 @@ import {
     nowPlaying,
     removeActivity,
 } from '../Activities';
+import { cyclingWear } from '../CyclingWear';
 import {
     newCollection,
     getCollections,
@@ -59,6 +60,10 @@ const routes: Record<string, RouteConfig> = {
     removeActivity: {
         handler: removeActivity,
         buildCommandText: (p) => `/removeActivity ${p.title}`,
+    },
+    cyclingWear: {
+        handler: cyclingWear,
+        buildCommandText: (p) => `/cyclingWear ${p.requestText}`,
     },
     newCollection: {
         handler: newCollection,

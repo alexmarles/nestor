@@ -17,6 +17,7 @@ import {
     nowPlaying,
     removeActivity,
 } from './Activities';
+import { cyclingWear } from './CyclingWear';
 import { nlpMiddleware } from './NLP';
 
 export const HELP_COPY = `
@@ -60,6 +61,11 @@ _/nowPlaying [title] on [platform]_ – add a game
 (Example: \`/nowPlaying The Legend of Zelda on Nintendo Switch\`)
 _/removeActivity [title]_ – remove an activity
 (Example: \`/removeActivity Ready Player One\`)
+
+*Cycling*
+_/cyclingWear [forecast and route details]_ – recommend what to wear for a ride
+(Example: \`/cyclingWear Tomorrow 08:00 start, 7C rising to 15C, windy, dry, 2h hilly ride\`)
+You can also send a weather screenshot, with or without a caption.
 `;
 
 export const initNestor = (bot: any) => {
@@ -103,6 +109,8 @@ export const initNestor = (bot: any) => {
     bot.command('nowPlaying', nowPlaying);
 
     bot.command('removeActivity', removeActivity);
+
+    bot.command('cyclingWear', cyclingWear);
 
     bot.command('health', (ctx: any) => ctx.reply('I am ok!'));
 

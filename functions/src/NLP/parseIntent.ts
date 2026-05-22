@@ -20,5 +20,14 @@ export async function parseIntent(userMessage: string): Promise<ParsedIntent> {
     const raw = response.content[0].type === 'text' ?
         response.content[0].text : '';
     const text = raw.replace(/```json\s*|\s*```/g, '').trim();
-    return JSON.parse(text) as ParsedIntent;
+    const parsed = JSON.parse(text) as ParsedIntent;
+
+    if (parsed.intent === 'cyclingWear' && !parsed.params?.requestText) {
+        parsed.params = {
+            ...(parsed.params ?? {}),
+            requestText: userMessage,
+        };
+    }
+
+    return parsed;
 }

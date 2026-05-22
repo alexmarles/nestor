@@ -8,6 +8,7 @@ build
 FirebaseService.json
 WebpageService.json
 webhooks.sh
+functions/config/cycling-profile.json
 
 # Compiled JavaScript files
 lib/**/*.js

@@ -38,6 +38,14 @@ Tutorial from Kai Kok Chew [here](https://medium.com/@kaikok/telegram-bot-with-c
 | `/help` | Show available commands |
 | `/health` | Bot status check |
 
+### Cycling
+
+| Command | Description | Example |
+|---|---|---|
+| `/cyclingWear [forecast and route details]` | Recommend what to wear for a ride using the stored cycling profile plus the forecast in your message | `/cyclingWear Tomorrow 08:00 start, 7C rising to 15C, windy, dry, 2h hilly ride` |
+
+You can also send a weather forecast screenshot directly to the bot. If needed, add a caption with route details such as start time, duration, or terrain.
+
 ## Deploy
 
 ```sh
