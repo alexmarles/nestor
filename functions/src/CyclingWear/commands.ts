@@ -1,50 +1,63 @@
 import { generateCyclingWearAdvice } from './advisor';
+import {
+    extractCyclingForecastImage,
+    hasSupportedTelegramImage,
+} from './image';
 import { getCyclingProfilePath, loadCyclingProfile } from './profile';
+import { formatCyclingTelegramMessage } from './telegram';
 import { detectRequestLanguage, SupportedLanguage } from './language';
 
 export const cyclingWear = async (ctx: any) => {
     console.log('[COMMANDS] - cyclingWear');
 
-    const originalText = ctx.message.text ?? '';
-    const forecastRequest = ctx.message.text
+    const originalText = ctx.message.text ?? ctx.message.caption ?? '';
+    const forecastRequest = originalText
         .replace(/^\/cyclingWear(?:@\w+)?\s*/i, '')
         .trim();
     const language = detectRequestLanguage(forecastRequest || originalText);
+    const hasImage = hasSupportedTelegramImage(ctx.message);
 
-    if (!forecastRequest) {
-        ctx.reply(getUsageMessage(language));
+    if (!forecastRequest && !hasImage) {
+        await replyFormatted(ctx, getUsageMessage(language));
         return;
     }
 
     try {
         const profile = loadCyclingProfile();
+        const forecastImage = await extractCyclingForecastImage(ctx);
         const advice = await generateCyclingWearAdvice(
             profile,
             forecastRequest,
-            language
+            language,
+            forecastImage
         );
 
-        ctx.reply(advice);
+        await replyFormatted(ctx, advice);
     } catch (error) {
         console.error(error);
 
         const message = error instanceof Error ? error.message : '';
 
         if (message.startsWith('Missing cycling profile file')) {
-            ctx.reply(
+            await replyFormatted(
+                ctx,
                 getMissingProfileMessage(language, getCyclingProfilePath())
             );
             return;
         }
 
         if (message.includes('Cycling profile')) {
-            ctx.reply(getInvalidProfileMessage(language));
+            await replyFormatted(ctx, getInvalidProfileMessage(language));
             return;
         }
 
-        ctx.reply(getGenericErrorMessage(language));
+        await replyFormatted(ctx, getGenericErrorMessage(language));
     }
 };
+
+async function replyFormatted(ctx: any, message: string): Promise<void> {
+    await ctx.replyWithHTML(formatCyclingTelegramMessage(message));
+}
 
 function getUsageMessage(language: SupportedLanguage | null): string {
     switch (language) {

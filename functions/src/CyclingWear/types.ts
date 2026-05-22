@@ -1,6 +1,13 @@
+export interface CyclingItemTranslations {
+    en?: string;
+    es?: string;
+    ca?: string;
+}
+
 export interface CyclingWardrobeItem {
     name: string;
     category: string;
+    translations?: CyclingItemTranslations;
     notes?: string[];
     preferredConditions?: string[];
     avoidConditions?: string[];

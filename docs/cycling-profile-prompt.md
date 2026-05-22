@@ -13,6 +13,7 @@ Important rules:
 - Output valid JSON only.
 - Do not wrap the JSON in markdown fences.
 - Every wardrobe item must include "name" and "category".
+- If you know how I naturally name clothing items in Catalan or Spanish, include those in "translations".
 - Keep short notes as arrays of strings when useful.
 
 Use exactly this JSON structure:
@@ -45,6 +46,10 @@ Use exactly this JSON structure:
     {
       "name": "string",
       "category": "string",
+      "translations": {
+        "es": "string",
+        "ca": "string"
+      },
       "notes": ["string"],
       "preferredConditions": ["string"],
       "avoidConditions": ["string"]
@@ -61,5 +66,6 @@ Additional guidance:
 - In "decisionRules", include any real temperature, rain, wind, descent, layering, or comfort rules you know I follow.
 - In "wardrobe", include all owned cycling items you know about: jerseys, base layers, jackets, gilets, bibs, tights, warmers, gloves, socks, overshoes, caps, etc.
 - Use categories like "base-layer", "jersey", "outer-layer", "bottoms", "accessory", "gloves", or "footwear" when appropriate.
+- In "translations", prefer practical item names I would naturally use in each language rather than literal word-for-word translations.
 - Keep the output compact but complete enough for the bot to make clothing recommendations from a forecast message.
 ```

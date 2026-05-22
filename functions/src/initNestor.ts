@@ -65,6 +65,7 @@ _/removeActivity [title]_ – remove an activity
 *Cycling*
 _/cyclingWear [forecast and route details]_ – recommend what to wear for a ride
 (Example: \`/cyclingWear Tomorrow 08:00 start, 7C rising to 15C, windy, dry, 2h hilly ride\`)
+You can also send a weather screenshot, with or without a caption.
 `;
 
 export const initNestor = (bot: any) => {

@@ -52,6 +52,10 @@
     {
       "name": "Short sleeve jersey",
       "category": "jersey",
+      "translations": {
+        "es": "Maillot de manga corta",
+        "ca": "Mallot de màniga curta"
+      },
       "notes": [
         "Main warm-weather jersey"
       ],
@@ -62,6 +66,10 @@
     {
       "name": "Light sleeveless base layer",
       "category": "base-layer",
+      "translations": {
+        "es": "Capa base ligera sin mangas",
+        "ca": "Capa base lleugera sense mànigues"
+      },
       "notes": [
         "Good default base layer"
       ]
@@ -69,6 +77,10 @@
     {
       "name": "Thermal long sleeve jersey",
       "category": "jersey",
+      "translations": {
+        "es": "Maillot térmico de manga larga",
+        "ca": "Mallot tèrmic de màniga llarga"
+      },
       "preferredConditions": [
         "Cool dry mornings"
       ]
@@ -76,6 +88,10 @@
     {
       "name": "Packable gilet",
       "category": "outer-layer",
+      "translations": {
+        "es": "Chaleco cortavientos plegable",
+        "ca": "Armilla paravent plegable"
+      },
       "preferredConditions": [
         "Windy starts",
         "Long descents",
@@ -85,6 +101,10 @@
     {
       "name": "Rain jacket",
       "category": "outer-layer",
+      "translations": {
+        "es": "Chaqueta de lluvia",
+        "ca": "Jaqueta de pluja"
+      },
       "preferredConditions": [
         "Rain",
         "Cold wind"
@@ -92,30 +112,54 @@
     },
     {
       "name": "Bib shorts",
-      "category": "bottoms"
+      "category": "bottoms",
+      "translations": {
+        "es": "Culotte corto",
+        "ca": "Culot curt"
+      }
     },
     {
       "name": "Thermal bib tights",
       "category": "bottoms",
+      "translations": {
+        "es": "Culotte largo térmico",
+        "ca": "Culot llarg tèrmic"
+      },
       "preferredConditions": [
         "Cold rides"
       ]
     },
     {
       "name": "Arm warmers",
-      "category": "accessory"
+      "category": "accessory",
+      "translations": {
+        "es": "Manguitos",
+        "ca": "Maneguets"
+      }
     },
     {
       "name": "Leg warmers",
-      "category": "accessory"
+      "category": "accessory",
+      "translations": {
+        "es": "Perneras",
+        "ca": "Perneres"
+      }
     },
     {
       "name": "Summer gloves",
-      "category": "gloves"
+      "category": "gloves",
+      "translations": {
+        "es": "Guantes cortos",
+        "ca": "Guants curts"
+      }
     },
     {
       "name": "Full-finger gloves",
       "category": "gloves",
+      "translations": {
+        "es": "Guantes largos",
+        "ca": "Guants llargs"
+      },
       "preferredConditions": [
         "Cold starts",
         "Long descents"
@@ -123,11 +167,19 @@
     },
     {
       "name": "Toe covers",
-      "category": "footwear"
+      "category": "footwear",
+      "translations": {
+        "es": "Punteras",
+        "ca": "Punteres"
+      }
     },
     {
       "name": "Winter socks",
-      "category": "footwear"
+      "category": "footwear",
+      "translations": {
+        "es": "Calcetines de invierno",
+        "ca": "Mitjons d'hivern"
+      }
     }
   ],
   "responsePreferences": {

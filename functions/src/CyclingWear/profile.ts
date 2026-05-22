@@ -48,7 +48,8 @@ function validateCyclingProfile(profile: CyclingProfile): void {
             !item ||
             typeof item !== 'object' ||
             typeof item.name !== 'string' ||
-            typeof item.category !== 'string'
+            typeof item.category !== 'string' ||
+            !hasValidTranslations(item.translations)
     );
 
     if (invalidItem) {
@@ -56,4 +57,19 @@ function validateCyclingProfile(profile: CyclingProfile): void {
             'Each wardrobe item must include at least "name" and "category".'
         );
     }
+}
+
+function hasValidTranslations(translations: unknown): boolean {
+    if (translations === undefined) return true;
+
+    if (!translations || typeof translations !== 'object') {
+        return false;
+    }
+
+    const localized = translations as Record<string, unknown>;
+
+    return ['en', 'es', 'ca'].every((language) => {
+        const value = localized[language];
+        return value === undefined || typeof value === 'string';
+    });
 }
